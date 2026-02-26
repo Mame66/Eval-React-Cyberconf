@@ -1,43 +1,52 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { AuthProvider } from "./context/AuthContext"
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
+import HomePage from './pages/HomePage';
+import ConferencePage from './pages/ConferencePage';
+import LoginPage from './pages/LoginPage';
+import AdminConferencesPage from './pages/AdminConferencesPage';
+import AdminUsersPage from './pages/AdminUsersPage';
+import NotFoundPage from './pages/NotFoundPage';
+import './index.css';
 
-import Home from "./pages/Home"
-import ConferenceDetail from "./pages/ConferenceDetail"
-import Login from "./pages/Login"
-import AdminConferences from "./pages/AdminConferences"
-import AdminUsers from "./pages/AdminUsers"
-import ProtectedRoute from "./components/shared/ProtectedRoute"
-
-function App() {
-    return (
-        <AuthProvider>
-            <BrowserRouter>
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="*"
+            element={
+              <>
+                <Navbar />
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/conference/:id" element={<ConferenceDetail />} />
-                    <Route path="/login" element={<Login />} />
-
-                    <Route
-                        path="/admin/conferences"
-                        element={
-                            <ProtectedRoute adminOnly>
-                                <AdminConferences />
-                            </ProtectedRoute>
-                        }
-                    />
-
-                    <Route
-                        path="/admin/users"
-                        element={
-                            <ProtectedRoute adminOnly>
-                                <AdminUsers />
-                            </ProtectedRoute>
-                        }
-                    />
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/conferences/:id" element={<ConferencePage />} />
+                  <Route
+                    path="/admin/conferences"
+                    element={
+                      <ProtectedRoute adminOnly>
+                        <AdminConferencesPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/users"
+                    element={
+                      <ProtectedRoute adminOnly>
+                        <AdminUsersPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
-            </BrowserRouter>
-        </AuthProvider>
-    )
+              </>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
-
-export default App

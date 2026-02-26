@@ -1,16 +1,56 @@
-# React + Vite
+# CyberConf — Application React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Présentation
 
-Currently, two official plugins are available:
+Application web React permettant la consultation et la gestion de conférences, avec un système d'authentification et des rôles (utilisateur / administrateur).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Prérequis
 
-## React Compiler
+- Node.js 18+
+- L'API disponible à `http://localhost:4555` (via Docker Compose)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Installation et démarrage
 
-## Expanding the ESLint configuration
+```bash
+# Installer les dépendances
+npm install
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Lancer en développement
+npm start
+```
+
+L'application sera disponible sur `http://localhost:3000`.
+
+## Lancer l'API (Docker)
+
+Créez un fichier `docker-compose.yml` avec le contenu fourni dans le sujet, puis :
+
+```bash
+docker-compose up
+```
+
+## Pages
+
+| Route | Description | Accès |
+|-------|-------------|-------|
+| `/` | Liste de toutes les conférences | Public |
+| `/conferences/:id` | Fiche détaillée d'une conférence | Public |
+| `/login` | Page de connexion | Public |
+| `/admin/conferences` | Gestion des conférences | Admin uniquement |
+| `/admin/users` | Gestion des utilisateurs | Admin uniquement |
+
+## Fonctionnalités
+
+- **Authentification** : connexion avec identifiant + mot de passe, gestion des rôles
+- **Liste des conférences** : affichage en grille avec code couleur, recherche
+- **Fiche détaillée** : description, contenu, thème couleur, intervenants, partenaires, lieu
+- **Admin — Conférences** : créer, modifier, supprimer des conférences
+- **Admin — Utilisateurs** : consulter la liste, promouvoir un utilisateur en admin
+- **Protection des routes** : les non-admins sont bloqués sur les pages d'administration
+
+## Technologies
+
+- React 18
+- React Router DOM 6
+- CSS personnalisé (thème dark, police Syne + Space Mono)
+- Fetch API (communication avec l'API REST)
