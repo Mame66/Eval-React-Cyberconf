@@ -14,33 +14,21 @@ const request = async (url, options = {}) => {
     headers: headers(),
   });
 
-  if (!res.ok) {
-    throw new Error('Erreur API');
-  }
+  if (!res.ok) throw new Error('Erreur API');
 
   return res.json();
 };
 
 export const api = {
   login: (id, password) =>
-      request('/login', {
-        method: 'POST',
-        body: JSON.stringify({ id, password }),
-      }),
+      request('/login', { method: 'POST', body: JSON.stringify({ id, password }) }),
 
   signup: (id, password) =>
-      request('/signup', {
-        method: 'POST',
-        body: JSON.stringify({ id, password }),
-      }),
+      request('/signup', { method: 'POST', body: JSON.stringify({ id, password }) }),
 
-  isAdmin: async () => {
-    const res = await request('/isadmin');
-    return res.isAdmin;
-  },
+  isAdmin: async () => (await request('/isadmin')).isAdmin,
 
-  getConferences: () =>
-      request('/conferences'),
+  getConferences: () => request('/conferences'),
 
   getConference: async (id) => {
     const res = await request(`/conference/${id}`);
@@ -48,33 +36,19 @@ export const api = {
   },
 
   createConference: (conference) =>
-      request('/conference', {
-        method: 'POST',
-        body: JSON.stringify({ conference }),
-      }),
+      request('/conference', { method: 'POST', body: JSON.stringify({ conference }) }),
 
   updateConference: (id, conference) =>
-      request(`/conference?id=${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ conference }),
-      }),
+      request(`/conference?id=${id}`, { method: 'PATCH', body: JSON.stringify({ conference }) }),
 
   deleteConference: (id) =>
-      request(`/conference?id=${id}`, {
-        method: 'DELETE',
-      }),
+      request(`/conference?id=${id}`, { method: 'DELETE' }),
 
-  getUsers: () =>
-      request('/users'),
+  getUsers: () => request('/users'),
 
   promoteUser: (id) =>
-      request(`/usertype?id=${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ newType: 'admin' }),
-      }),
+      request(`/usertype?id=${id}`, { method: 'PATCH', body: JSON.stringify({ newType: 'admin' }) }),
 
   deleteUser: (id) =>
-      request(`/user?id=${id}`, {
-        method: 'DELETE',
-      }),
+      request(`/user?id=${id}`, { method: 'DELETE' }),
 };

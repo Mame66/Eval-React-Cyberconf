@@ -10,13 +10,13 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
 
   if (adminOnly && !isAdmin) {
     return (
-      <div className="page">
-        <div className="empty">
-          <div className="empty-icon">🔒</div>
-          <div className="empty-title">Accès refusé</div>
-          <div className="empty-sub">Vous n'avez pas les droits nécessaires.</div>
+        <div className="page">
+          <div className="empty">
+            <div className="empty-icon">🔒</div>
+            <div className="empty-title">Accès refusé</div>
+            <div className="empty-sub">Vous n'avez pas les droits nécessaires.</div>
+          </div>
         </div>
-      </div>
     );
   }
 

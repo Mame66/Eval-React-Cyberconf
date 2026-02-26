@@ -1,0 +1,19 @@
+.conf-detail-page { display:flex; flex-direction:column; }
+.conf-hero { height:300px; background-size:cover; background-position:center; position:relative; }
+.conf-hero-overlay { background:rgba(0,0,0,0.5); height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#fff; }
+.back-link { color:#bbb; margin-bottom:1rem; text-decoration:none; }
+.conf-color-bar { height:6px; }
+.conf-body { padding:2rem; max-width:800px; margin:0 auto; }
+.conf-description { font-style:italic; border-left:3px solid var(--accent); padding-left:1rem; color:var(--muted); margin-bottom:2rem; }
+.conf-section { margin-bottom:2rem; }
+.conf-section h3 { font-size:0.85rem; text-transform:uppercase; color:var(--muted); margin-bottom:1rem; }
+.conf-speakers { display:flex; gap:0.5rem; flex-wrap:wrap; }
+.speaker-chip { padding:0.25rem 0.5rem; border-radius:4px; background:#eee; font-size:0.8rem; }
+.conf-stakeholders { display:flex; gap:1rem; flex-wrap:wrap; }
+.stakeholder-card { display:flex; align-items:center; gap:0.5rem; }
+.stakeholder-avatar { width:40px; height:40px; border-radius:50%; background:#ddd; display:flex; justify-content:center; align-items:center; font-weight:700; }
+.meta-card { border:1px solid #eee; padding:1rem; border-radius:8px; margin-bottom:1rem; }
+.color-boxes { display:flex; gap:0.5rem; margin:0.5rem 0; }
+.color-boxes div { flex:1; height:30px; border-radius:4px; }
+.color-values { font-family:var(--font-mono); font-size:0.75rem; color:var(--muted); }
+.conf-sidebar { max-width:300px; margin:2rem auto; display:flex; flex-direction:column; gap:1rem; }
