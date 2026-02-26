@@ -65,7 +65,7 @@ export default function HomePage() {
 
         {!loading && !error && filtered.length === 0 && (
           <div className="empty">
-            <div className="empty-icon">📭</div>
+            <div className="empty-icon"></div>
             <div className="empty-title">Aucune conférence trouvée</div>
             <div className="empty-sub">Essayez un autre terme de recherche</div>
           </div>

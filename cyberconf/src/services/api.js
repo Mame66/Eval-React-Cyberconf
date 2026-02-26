@@ -1,108 +1,80 @@
 const BASE_URL = 'http://localhost:4555';
 
-const getHeaders = () => {
+const headers = () => {
   const token = localStorage.getItem('token');
   return {
     'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    Authorization: token ? `Bearer ${token}` : undefined,
   };
 };
 
-export const api = {
-  // Auth
-  login: async (id, password) => {
-    const res = await fetch(`${BASE_URL}/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, password }),
-    });
-    if (!res.ok) throw new Error('Identifiants invalides');
-    return res.json(); // retourne { Token: "..." }
-  },
+const request = async (url, options = {}) => {
+  const res = await fetch(BASE_URL + url, {
+    ...options,
+    headers: headers(),
+  });
 
-  signup: async (id, password) => {
-    const res = await fetch(`${BASE_URL}/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, password }),
-    });
-    if (!res.ok) throw new Error('Erreur lors de la création du compte');
-    return res.json();
-  },
+  if (!res.ok) {
+    throw new Error('Erreur API');
+  }
+
+  return res.json();
+};
+
+export const api = {
+  login: (id, password) =>
+      request('/login', {
+        method: 'POST',
+        body: JSON.stringify({ id, password }),
+      }),
+
+  signup: (id, password) =>
+      request('/signup', {
+        method: 'POST',
+        body: JSON.stringify({ id, password }),
+      }),
 
   isAdmin: async () => {
-    const res = await fetch(`${BASE_URL}/isadmin`, { headers: getHeaders() });
-    if (!res.ok) return false;
-    const data = await res.json();
-    return data.isAdmin;
+    const res = await request('/isadmin');
+    return res.isAdmin;
   },
 
-  // Conferences
-  getConferences: async () => {
-    const res = await fetch(`${BASE_URL}/conferences`, { headers: getHeaders() });
-    if (!res.ok) throw new Error('Erreur lors du chargement');
-    return res.json();
-  },
+  getConferences: () =>
+      request('/conferences'),
 
   getConference: async (id) => {
-    const res = await fetch(`${BASE_URL}/conference/${id}`, { headers: getHeaders() });
-    if (!res.ok) throw new Error('Conférence introuvable');
-    const data = await res.json();
-    return data.conference || data;
+    const res = await request(`/conference/${id}`);
+    return res.conference || res;
   },
 
-  createConference: async (conference) => {
-    const res = await fetch(`${BASE_URL}/conference`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({ conference }),
-    });
-    if (!res.ok) throw new Error('Erreur lors de la création');
-    return res.json();
-  },
+  createConference: (conference) =>
+      request('/conference', {
+        method: 'POST',
+        body: JSON.stringify({ conference }),
+      }),
 
-  updateConference: async (id, conference) => {
-    const res = await fetch(`${BASE_URL}/conference?id=${id}`, {
-      method: 'PATCH',
-      headers: getHeaders(),
-      body: JSON.stringify({ conference }),
-    });
-    if (!res.ok) throw new Error('Erreur lors de la mise à jour');
-    return res.json();
-  },
+  updateConference: (id, conference) =>
+      request(`/conference?id=${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ conference }),
+      }),
 
-  deleteConference: async (id) => {
-    const res = await fetch(`${BASE_URL}/conference?id=${id}`, {
-      method: 'DELETE',
-      headers: getHeaders(),
-    });
-    if (!res.ok) throw new Error('Erreur lors de la suppression');
-    return res.json();
-  },
+  deleteConference: (id) =>
+      request(`/conference?id=${id}`, {
+        method: 'DELETE',
+      }),
 
-  // Users
-  getUsers: async () => {
-    const res = await fetch(`${BASE_URL}/users`, { headers: getHeaders() });
-    if (!res.ok) throw new Error('Erreur chargement utilisateurs');
-    return res.json();
-  },
+  getUsers: () =>
+      request('/users'),
 
-  promoteUser: async (id, newType = 'admin') => {
-    const res = await fetch(`${BASE_URL}/usertype?id=${id}`, {
-      method: 'PATCH',
-      headers: getHeaders(),
-      body: JSON.stringify({ newType }),
-    });
-    if (!res.ok) throw new Error('Erreur lors de la promotion');
-    return res.json();
-  },
+  promoteUser: (id) =>
+      request(`/usertype?id=${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ newType: 'admin' }),
+      }),
 
-  deleteUser: async (id) => {
-    const res = await fetch(`${BASE_URL}/user?id=${id}`, {
-      method: 'DELETE',
-      headers: getHeaders(),
-    });
-    if (!res.ok) throw new Error('Erreur lors de la suppression');
-    return res.json();
-  },
+  deleteUser: (id) =>
+      request(`/user?id=${id}`, {
+        method: 'DELETE',
+      }),
 };
