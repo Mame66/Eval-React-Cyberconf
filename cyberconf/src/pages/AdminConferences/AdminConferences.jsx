@@ -74,8 +74,6 @@ const AdminConferences = () => {
     setEditing(null);
   };
 
-  //  Speakers
-
   const addSpeaker = () => {
     if (!speakerInput.firstname || !speakerInput.lastname) return;
     setForm((prev) => ({
@@ -92,7 +90,6 @@ const AdminConferences = () => {
     }));
   };
 
-  //  Stakeholders
 
   const addStakeholder = () => {
     if (!stakeholderInput.firstname || !stakeholderInput.lastname) return;
