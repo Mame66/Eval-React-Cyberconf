@@ -1,54 +1,77 @@
 const BASE_URL = 'http://localhost:4555';
 
-const headers = () => {
-  const token = localStorage.getItem('token');
-  return {
-    'Content-Type': 'application/json',
-    Authorization: token ? `Bearer ${token}` : undefined,
-  };
-};
+// Récupère le token stocké en localStorage
+const getToken = () => localStorage.getItem('token');
 
-const request = async (url, options = {}) => {
-  const res = await fetch(BASE_URL + url, {
-    ...options,
-    headers: headers(),
-  });
+// Headers communs avec autorisation
+const authHeaders = () => ({
+  'Content-Type': 'application/json',
+  Authorization: `Bearer ${getToken()}`,
+});
 
-  if (!res.ok) throw new Error('Erreur API');
-
+// Gestion centralisée des réponses
+const handleResponse = async (res) => {
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || `Erreur ${res.status}`);
+  }
   return res.json();
 };
 
-export const api = {
-  login: (id, password) =>
-      request('/login', { method: 'POST', body: JSON.stringify({ id, password }) }),
+// ── AUTH ──────────────────────────────────────────────
 
-  signup: (id, password) =>
-      request('/signup', { method: 'POST', body: JSON.stringify({ id, password }) }),
+export const login = (id, password) =>
+  fetch(`${BASE_URL}/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, password }),
+  }).then(handleResponse);
 
-  isAdmin: async () => (await request('/isadmin')).isAdmin,
+export const signup = (id, password) =>
+  fetch(`${BASE_URL}/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, password }),
+  }).then(handleResponse);
 
-  getConferences: () => request('/conferences'),
+// ── CONFÉRENCES ───────────────────────────────────────
 
-  getConference: async (id) => {
-    const res = await request(`/conference/${id}`);
-    return res.conference || res;
-  },
+export const getConferences = () =>
+  fetch(`${BASE_URL}/conferences`).then(handleResponse);
 
-  createConference: (conference) =>
-      request('/conference', { method: 'POST', body: JSON.stringify({ conference }) }),
+export const getConference = (id) =>
+  fetch(`${BASE_URL}/conference/${id}`).then(handleResponse);
 
-  updateConference: (id, conference) =>
-      request(`/conference?id=${id}`, { method: 'PATCH', body: JSON.stringify({ conference }) }),
+export const createConference = (conference) =>
+  fetch(`${BASE_URL}/conference`, {
+    method: 'POST',
+    headers: authHeaders(),
+    body: JSON.stringify({ conference }),
+  }).then(handleResponse);
 
-  deleteConference: (id) =>
-      request(`/conference?id=${id}`, { method: 'DELETE' }),
+export const updateConference = (id, conference) =>
+  fetch(`${BASE_URL}/conference?id=${id}`, {
+    method: 'PATCH',
+    headers: authHeaders(),
+    body: JSON.stringify({ conference }),
+  }).then(handleResponse);
 
-  getUsers: () => request('/users'),
+export const deleteConference = (id) =>
+  fetch(`${BASE_URL}/conference?id=${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(),
+  }).then(handleResponse);
 
-  promoteUser: (id) =>
-      request(`/usertype?id=${id}`, { method: 'PATCH', body: JSON.stringify({ newType: 'admin' }) }),
+// ── UTILISATEURS ──────────────────────────────────────
 
-  deleteUser: (id) =>
-      request(`/user?id=${id}`, { method: 'DELETE' }),
-};
+export const getUsers = () =>
+  fetch(`${BASE_URL}/users`, {
+    headers: authHeaders(),
+  }).then(handleResponse);
+
+export const promoteUser = (id, newType) =>
+  fetch(`${BASE_URL}/usertype?id=${id}`, {
+    method: 'PATCH',
+    headers: authHeaders(),
+    body: JSON.stringify({ newType }),
+  }).then(handleResponse);
