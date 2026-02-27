@@ -4,48 +4,45 @@ Application web de consultation et gestion de conférences.
 
 ## Lancer le projet
 
+### 1. Démarrer l'API (Docker)
+
+ fichier `docker-compose.yml` 
+
+```bash
+docker-compose up
+```
+
+- API disponible sur : `http://localhost:4555`
+- Interface base de données : `http://localhost:9555` (login: `admin` / `pass`)
+
+### 2. Lancer l'application React
+
 ```bash
 npm install
 npm start
 ```
 
-L'application est accessible sur `http://localhost:3000`.
+## Comptes de test
 
-L'API doit tourner sur `http://localhost:4555` (voir docker-compose.yml fourni).
+| Identifiant | Mot de passe | Rôle |
+|------------|--------------|------|
+| `admin`    | `pass123`    |admin |
+| `user`     | `pass123`    | Utilisateur simple |
 
-## Structure du projet
+## Fonctionnalités par rôle
 
-```
-src/
-├── components/          # Composants réutilisables
-│   ├── Navbar/
-│   ├── ProtectedRoute/
-│   ├── ConferenceCard/
-│   └── Modal/
-├── context/
-│   └── AuthContext.js   # Gestion de l'authentification
-├── hooks/               # Hooks personnalisés
-│   ├── useConferences.js
-│   └── useUsers.js
-├── pages/               # Une page = un dossier
-│   ├── Home/
-│   ├── Login/
-│   ├── ConferenceDetail/
-│   ├── AdminConferences/
-│   ├── AdminUsers/
-│   └── NotFound/
-├── services/
-│   └── api.js           # Appels à l'API REST
-└── styles/
-    ├── global.css       # Variables CSS et reset
-    └── components.css   # Styles partagés (boutons, formulaires...)
-```
+### Utilisateur non connecté
+- Consulter la liste des conférences
+- Voir le détail d'une conférence
 
-## Fonctionnalités
+### Utilisateur connecté (user)
+- Mêmes accès que non connecté
+- Les pages d'administration sont inaccessibles
 
-- Consultation de la liste des conférences
-- Fiche détaillée avec thème couleur, intervenants, partenaires, lieu
-- Connexion / inscription
-- Administration des conférences (créer, modifier, supprimer)
-- Administration des utilisateurs (liste, promouvoir en admin)
-- Protection des routes admin
+### Administrateur
+- Tout ce que peut faire un utilisateur
+- **Gérer les conférences** : créer, modifier, supprimer
+- **Gérer les utilisateurs** : consulter la liste, promouvoir un utilisateur en admin
+
+---
+

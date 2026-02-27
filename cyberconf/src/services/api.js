@@ -18,7 +18,6 @@ const handleResponse = async (res) => {
   return res.json();
 };
 
-// ── AUTH ──────────────────────────────────────────────
 
 export const login = (id, password) =>
   fetch(`${BASE_URL}/login`, {
@@ -34,7 +33,7 @@ export const signup = (id, password) =>
     body: JSON.stringify({ id, password }),
   }).then(handleResponse);
 
-// ── CONFÉRENCES ───────────────────────────────────────
+//  CONFÉRENCES
 
 export const getConferences = () =>
   fetch(`${BASE_URL}/conferences`).then(handleResponse);
@@ -46,23 +45,22 @@ export const createConference = (conference) =>
   fetch(`${BASE_URL}/conference`, {
     method: 'POST',
     headers: authHeaders(),
-    body: JSON.stringify({ conference }),
+      body: JSON.stringify(conference),
   }).then(handleResponse);
 
 export const updateConference = (id, conference) =>
-  fetch(`${BASE_URL}/conference?id=${id}`, {
-    method: 'PATCH',
-    headers: authHeaders(),
-    body: JSON.stringify({ conference }),
-  }).then(handleResponse);
-
+    fetch(`${BASE_URL}/conference?id=${id}`, {
+        method: 'PATCH',
+        headers: authHeaders(),
+        body: JSON.stringify(conference),
+    }).then(handleResponse);
 export const deleteConference = (id) =>
   fetch(`${BASE_URL}/conference?id=${id}`, {
     method: 'DELETE',
     headers: authHeaders(),
   }).then(handleResponse);
 
-// ── UTILISATEURS ──────────────────────────────────────
+//  UTILISATEURS
 
 export const getUsers = () =>
   fetch(`${BASE_URL}/users`, {

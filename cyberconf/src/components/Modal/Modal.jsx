@@ -1,7 +1,7 @@
 import './Modal.css';
 
 const Modal = ({ title, onClose, children, footer }) => {
-  // Fermer en cliquant sur l'overlay
+
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) onClose();
   };
