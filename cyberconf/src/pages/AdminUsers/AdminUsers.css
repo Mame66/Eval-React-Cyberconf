@@ -1,0 +1,24 @@
+.admin-users {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.admin-users__header {
+  margin-bottom: 24px;
+}
+
+.admin-users__title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.admin-users__stats {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.admin-users__stats strong {
+  color: var(--color-text);
+}
